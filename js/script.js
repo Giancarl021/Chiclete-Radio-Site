@@ -1,7 +1,14 @@
 let isPlaying = false;
+let $detailsCard, $backlock;
+const scroll = {x: 0, y: 0};
 
 function init() {
     const request = new XMLHttpRequest();
+
+    window.onresize = setScroll;
+
+    $detailsCard = document.getElementById('details-card');
+    $backlock = document.getElementById('backlock');
 
     request.addEventListener('load', e => {
         decodeXML(e.currentTarget);
@@ -43,7 +50,7 @@ function init() {
 
             const itemNodes = xml.getElementsByTagName('item');
 
-            for(const item of itemNodes) {
+            for (const item of itemNodes) {
                 // console.log(item);
                 // return;
                 const getTag = str => item.getElementsByTagName(str)[0].innerHTML;
@@ -55,7 +62,7 @@ function init() {
                     releaseDate: getTag('pubDate'),
                     src: getUrl('enclosure'),
                     img: getUrl('media:content'),
-                    desc: getTag('description').replace(/<!\[CDATA\[/, '').replace(/]]>/,'')
+                    desc: getTag('description').replace(/<!\[CDATA\[/, '').replace(/]]>/, '')
                 });
             }
             return data;
@@ -64,20 +71,35 @@ function init() {
 }
 
 function showDetails(e) {
-    const $d = document.getElementById('details-card');
-    const getTag = str => $d.getElementsByTagName(str)[0];
+    const getTag = str => $detailsCard.getElementsByTagName(str)[0];
     getTag('img').src = e.img;
     getTag('h1').innerText = e.title;
-    $d.style.opacity = '1';
-    $d.style.pointerEvents = 'all';
+    $detailsCard.style.opacity = '1';
+    $detailsCard.style.pointerEvents = 'all';
     // getTag('h2').onclick = playPodcast(e.src);
     getTag('h2').setAttribute('data-src', e.src); // <<< Gambiarra
     // getTag('h2').innerHTML = e.desc;
+
+    $backlock.style.height = '100vh';
+    $backlock.style.display = 'inherit';
+    // document.body.style.overflow = 'hidden';
+    setScroll();
+    window.onscroll = () => {
+        window.scrollTo(scroll.x, scroll.y)
+    };
+}
+
+function blurCard() {
+    $detailsCard.style.opacity = '0';
+    $detailsCard.style.pointerEvents = 'none';
+    $backlock.style.display = 'none';
+    // document.body.style.overflow = 'auto';
+    window.onscroll = undefined;
 }
 
 function playPodcast(src) {
     const $audio = document.getElementsByTagName('audio')[0];
-    if(!isPlaying) {
+    if (!isPlaying) {
         $audio.src = src;
         document.getElementById('details-card').getElementsByTagName('h2')[0].innerText = 'Pausar';
 
@@ -85,7 +107,7 @@ function playPodcast(src) {
             console.log('Podcast iniciado');
         });
     } else {
-        if($audio.src !== src) {
+        if ($audio.src !== src) {
             $audio.src = src;
             $audio.play().then(() => {
                 console.log('Podcast iniciado');
@@ -97,6 +119,11 @@ function playPodcast(src) {
     }
     isPlaying = !isPlaying;
 
+}
+
+function setScroll() {
+    scroll.x = window.scrollX;
+    scroll.y = window.scrollY;
 }
 
 document.addEventListener('DOMContentLoaded', init);
