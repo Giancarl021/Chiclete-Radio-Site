@@ -15,21 +15,21 @@
 <body>
     <header>
         <img id="main-img" src="img/logo_2.png" alt="Chiclete Radioativo" title="Chiclete Radioativo - Episódios">
+        <div id="audio-player" style="opacity: 0">
+            <img alt="play" src="img/loading.gif" onclick="audioCtrl()" id="audio-btn">
+            <audio></audio>
+        </div>
+        <div id="timestamp"></div>
     </header>
     <section>
     </section>
     <div id="details-card" style="opacity: 0; pointer-events: none">
         <img src="" alt="Chiclete Radioativo" title="Chiclete Radioativo">
-<!--        <img class="back-arrow" src="img/back.svg" alt="back" onclick="this.parentElement.style.opacity = '0'; this.parentElement.style.pointerEvents = 'none'">-->
         <h1></h1>
-        <h2 data-src="" onclick="playPodcast(this.getAttribute('data-src'))">Tocar</h2>
+        <h2 data-src="" onclick="playPodcast(this.getAttribute('data-src'), this.getAttribute('data-title'))">Tocar</h2>
 <!--        <h2>Descricao do episodio</h2>-->
     </div>
     <div id="backlock" style="display: none;" onclick="blurCard()"></div>
-    <div id="audio-player">
-
-        <audio src=""></audio>
-    </div>
 </body>
 
 </html>

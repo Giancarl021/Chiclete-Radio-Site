@@ -1,5 +1,5 @@
 let isPlaying = false;
-let $detailsCard, $backlock;
+let $detailsCard, $backlock, $audio, $aBtn;
 const scroll = {x: 0, y: 0};
 
 function init() {
@@ -9,7 +9,8 @@ function init() {
 
     $detailsCard = document.getElementById('details-card');
     $backlock = document.getElementById('backlock');
-
+    $audio = document.getElementsByTagName('audio')[0];
+    $aBtn = document.getElementById('audio-btn');
     request.addEventListener('load', e => {
         decodeXML(e.currentTarget);
     });
@@ -51,8 +52,6 @@ function init() {
             const itemNodes = xml.getElementsByTagName('item');
 
             for (const item of itemNodes) {
-                // console.log(item);
-                // return;
                 const getTag = str => item.getElementsByTagName(str)[0].innerHTML;
                 const getUrl = str => item.getElementsByTagName(str)[0].getAttribute('url');
                 data.episodes.push({
@@ -76,13 +75,11 @@ function showDetails(e) {
     getTag('h1').innerText = e.title;
     $detailsCard.style.opacity = '1';
     $detailsCard.style.pointerEvents = 'all';
-    // getTag('h2').onclick = playPodcast(e.src);
-    getTag('h2').setAttribute('data-src', e.src); // <<< Gambiarra
-    // getTag('h2').innerHTML = e.desc;
+    getTag('h2').setAttribute('data-src', e.src);
+    getTag('h2').setAttribute('data-title', e.title);
 
     $backlock.style.height = '100vh';
     $backlock.style.display = 'inherit';
-    // document.body.style.overflow = 'hidden';
     setScroll();
     window.onscroll = () => {
         window.scrollTo(scroll.x, scroll.y)
@@ -93,32 +90,36 @@ function blurCard() {
     $detailsCard.style.opacity = '0';
     $detailsCard.style.pointerEvents = 'none';
     $backlock.style.display = 'none';
-    // document.body.style.overflow = 'auto';
     window.onscroll = undefined;
 }
 
-function playPodcast(src) {
-    const $audio = document.getElementsByTagName('audio')[0];
+function playPodcast(src, title) {
+    const $aPlayer = document.getElementById('audio-player');
+    if(src === $audio.src) return;
     if (!isPlaying) {
         $audio.src = src;
-        document.getElementById('details-card').getElementsByTagName('h2')[0].innerText = 'Pausar';
-
-        $audio.play().then(() => {
-            console.log('Podcast iniciado');
-        });
+        // document.getElementById('audio-player').getElementsByTagName('h1')[0].innerText = title;
+        $aPlayer.style.opacity = '1';
+        audioCtrl();
     } else {
-        if ($audio.src !== src) {
-            $audio.src = src;
-            $audio.play().then(() => {
-                console.log('Podcast iniciado');
-            });
-        } else {
-            $audio.pause();
-            document.getElementById('details-card').getElementsByTagName('h2')[0].innerText = 'Tocar';
-        }
+        $audio.src = src;
+        audioCtrl();
     }
     isPlaying = !isPlaying;
 
+}
+
+function audioCtrl() {
+    if (!$audio.src) return;
+    if (isPlaying) {
+        $audio.pause();
+        $aBtn.src = 'img/play.svg';
+    } else {
+        $audio.play().then(() => {
+            $aBtn.src = 'img/pause.svg';
+        });
+    }
+    isPlaying = !isPlaying;
 }
 
 function setScroll() {

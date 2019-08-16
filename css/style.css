@@ -64,7 +64,6 @@ section {
     margin: 10px;
     border-radius: 15px;
     transition: filter .3s;
-    float: start;
 }
 
 .episode:hover,
@@ -130,13 +129,31 @@ section {
 }
 
 #backlock {
-    background-color: rgba(255, 255, 255, 0.03);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
+}
+
+#audio-player {
+    /*width: 10%;*/
+    height: 100%;
+    position: absolute;
+    right: 10px;
+    transition: opacity .4s;
+}
+
+#audio-player img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 90%;
+    width: auto;
+    border: 2px solid green;
+    border-radius: 15px;
 }
 
 @keyframes bg-animation {
