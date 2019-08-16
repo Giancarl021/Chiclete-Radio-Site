@@ -1,6 +1,7 @@
-let isPlaying = false;
-let $detailsCard, $backlock, $audio, $aBtn;
+let isPlaying = false, isInit = false;
+let $detailsCard, $backlock, $audio, $aBtn, $timestamp;
 const scroll = {x: 0, y: 0};
+let timestamp;
 
 function init() {
     const request = new XMLHttpRequest();
@@ -11,6 +12,7 @@ function init() {
     $backlock = document.getElementById('backlock');
     $audio = document.getElementsByTagName('audio')[0];
     $aBtn = document.getElementById('audio-btn');
+    $timestamp = document.getElementById('current-time');
     request.addEventListener('load', e => {
         decodeXML(e.currentTarget);
     });
@@ -95,11 +97,16 @@ function blurCard() {
 
 function playPodcast(src, title) {
     const $aPlayer = document.getElementById('audio-player');
-    if(src === $audio.src) return;
+    if (src === $audio.src) return;
     if (!isPlaying) {
         $audio.src = src;
         // document.getElementById('audio-player').getElementsByTagName('h1')[0].innerText = title;
-        $aPlayer.style.opacity = '1';
+        if (!isInit) {
+            $aPlayer.style.opacity = '1';
+            $timestamp.parentElement.style.backgroundColor = 'rgba(176, 205, 61, 0.4)';
+            timestamp = setInterval(changeTime, 500);
+            isInit = true;
+        }
         audioCtrl();
     } else {
         $audio.src = src;
@@ -125,6 +132,10 @@ function audioCtrl() {
 function setScroll() {
     scroll.x = window.scrollX;
     scroll.y = window.scrollY;
+}
+
+function changeTime() {
+    $timestamp.style.width = ($audio.currentTime / $audio.duration) * 100 + '%';
 }
 
 document.addEventListener('DOMContentLoaded', init);
