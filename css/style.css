@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css?family=Abel|Nanum+Gothic&display=swap');
+
+* {
+    color: white;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    transition: color .4s;
+    color: #B0CD3D;
+    cursor: pointer;
+}
+
+a:hover,
+a:focus {
+    outline: none;
+    text-decoration: none;
+    color: white;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #1E1226;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #A25E97;
+    background-image: linear-gradient(45deg, #A25E97, #1E1226);
+    background-size: 400%;
+    background-position: left;
+    z-index: 1;
+    animation: bg-animation 30s infinite alternate;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+header img {
+    height: 100%;
+    width: auto;
+}
+
+section {
+    position: absolute;
+    top: 10%;
+    width: calc(100% - 20px);
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.episode {
+    position: relative;
+    width: auto;
+    margin: 10px;
+    border-radius: 15px;
+    transition: filter .3s;
+}
+
+.episode:hover,
+.episode:focus {
+    filter: brightness(2);
+}
+
+#details-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(176, 205, 61, 0.9);
+    width: calc(100% - 80px);
+    min-height: 200px;
+    z-index: 2;
+    padding: 20px;
+    border-radius: 15px;
+    transition: opacity .4s;
+}
+
+#details-card img {
+    width: 100%;
+    height: auto;
+}
+
+#details-card .back-arrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: auto;
+}
+
+#details-card h1 {
+    /*display: inline;*/
+    position: relative;
+    text-align: center;
+    width: 100%;
+    margin: 2px 0;
+    color: #1E1226;
+}
+
+#details-card h2 {
+    font-family: 'Abel', sans-serif;
+    color: #1E1226;
+    text-align: center;
+    font-size: 50px;
+    border: 2px solid #1E1226;
+    margin: 2px 0;
+    transition: all .4s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+#details-card h2:hover,
+#details-card h2:focus {
+    background-color: #1E1226;
+    color: white;
+}
+
+#backlock {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#audio-player {
+    height: 100%;
+    position: absolute;
+    right: 10px;
+    transition: opacity .4s;
+}
+
+#audio-player img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 80%;
+    width: auto;
+    border: 2px solid #90D400;
+    border-radius: 15px;
+}
+
+#timestamp {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: 0;
+    transition: background-color .4s;
+}
+
+#current-time {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #B0CD3D;
+    transition: width .5s;
+}
+
+@keyframes bg-animation {
+    from {
+        background-position: left;
+    }
+    to {
+        background-position: right;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .episode {
+        height: 180px;
+    }
+
+    #details-card {
+        width: 500px;
+    }
+}
+
+@media only screen and (max-width: 699px) {
+    .episode {
+        height: 145px;
+    }
+
+    #details-card img {
+        width: 100%;
+    }
+}
